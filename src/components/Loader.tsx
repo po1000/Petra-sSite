@@ -1,11 +1,10 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Smiley } from "./Stickers";
 import { site } from "@/lib/site";
 
-// Full-screen loading screen: counts to 100, then wipes up off the screen.
-// Shows once per browser session so returning shoppers aren't slowed down.
+// Loading screen: a wobbling bubble and a glossy progress bar, then the whole
+// thing blurs away. Shows once per browser session.
 export default function Loader() {
   const [show, setShow] = useState(true);
   const [n, setN] = useState(0);
@@ -14,7 +13,7 @@ export default function Loader() {
     let seen = false;
     try { seen = sessionStorage.getItem("loaded") === "1"; } catch {}
     if (seen) { setShow(false); return; }
-    const id = setInterval(() => setN((v) => Math.min(v + Math.ceil(Math.random() * 9), 100)), 60);
+    const id = setInterval(() => setN((v) => Math.min(v + Math.ceil(Math.random() * 8), 100)), 70);
     return () => clearInterval(id);
   }, []);
 
@@ -23,7 +22,7 @@ export default function Loader() {
     const t = setTimeout(() => {
       setShow(false);
       try { sessionStorage.setItem("loaded", "1"); } catch {}
-    }, 350);
+    }, 400);
     return () => clearTimeout(t);
   }, [n]);
 
@@ -31,15 +30,16 @@ export default function Loader() {
     <AnimatePresence>
       {show && (
         <motion.div
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[var(--pink)]"
-          exit={{ y: "-100%", borderBottomLeftRadius: "50% 20%", borderBottomRightRadius: "50% 20%" }}
-          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed inset-0 z-[150] flex flex-col items-center justify-center bg-white"
+          exit={{ opacity: 0, filter: "blur(24px)", scale: 1.06 }}
+          transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
         >
-          <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}>
-            <Smiley className="w-28 h-28" />
-          </motion.div>
-          <p className="font-display mt-6 text-5xl md:text-7xl">{site.name}</p>
-          <p className="font-display text-[22vw] leading-none absolute bottom-0 right-4 opacity-90">{n}%</p>
+          <div className="bubble w-24 h-24" style={{ animation: "wobble 2.4s ease-in-out infinite" }} />
+          <p className="h-tight text-4xl md:text-5xl mt-8">{site.name}</p>
+          <div className="mt-6 w-56 h-3 rounded-full bg-[var(--soft)] overflow-hidden shadow-[inset_0_1px_3px_rgba(0,0,0,0.08)]">
+            <div className="h-full rounded-full transition-[width] duration-150" style={{ width: `${n}%`, background: "linear-gradient(180deg, #bfe1ff, var(--accent) 60%, var(--accent-deep))" }} />
+          </div>
+          <p className="mt-3 text-sm font-semibold text-[var(--muted)] tabular-nums">loading {n}%</p>
         </motion.div>
       )}
     </AnimatePresence>

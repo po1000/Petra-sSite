@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { formatGBP, site } from "@/lib/site";
+import GoBack from "@/components/GoBack";
 
 // Placeholder policy pages. TODO: client must supply/approve final wording —
 // these are starting points, not legal advice.
@@ -55,9 +56,10 @@ export default async function InfoPage({ params }: { params: Promise<{ slug: str
   const page = pages[(await params).slug];
   if (!page) notFound();
   return (
-    <section className="px-4 md:px-8 pt-12 max-w-3xl">
-      <h1 className="font-display text-4xl md:text-6xl mb-8">{page.title}</h1>
-      <div className="card p-6 space-y-4">{page.body}</div>
+    <section className="px-4 md:px-8 pt-4 max-w-3xl">
+      <GoBack fallback="/info" />
+      <h1 className="h-tight text-5xl md:text-7xl mt-6 mb-8">{page.title}</h1>
+      <div className="glow-card p-6 md:p-8 space-y-4 tracking-normal leading-relaxed">{page.body}</div>
     </section>
   );
 }

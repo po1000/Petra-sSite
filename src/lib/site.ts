@@ -4,7 +4,7 @@
 // ─────────────────────────────────────────────────────────────
 export const site = {
   name: "BRAND NAME", // TODO: client's brand name
-  tagline: "clothes for the chronically online & the outside-touching",
+  tagline: "soft clothes for loud days", // TODO
   email: "hello@example.co.uk", // TODO
   instagram: "https://instagram.com/", // TODO
   tiktok: "https://tiktok.com/", // TODO
@@ -28,7 +28,12 @@ export const site = {
   shipToCountries: ["GB"] as const, // add "IE", "FR", ... for international
 
   returnsDays: 14, // UK legal minimum for online sales is 14 days
-  announcement: "FREE UK SHIPPING OVER £75 ✶ NEW DROP OUT NOW ✶ MADE IN SMALL BATCHES",
+  // Scrolling messages in the pill at the top of every page. TODO: client's own.
+  ticker: ["free uk shipping over £75", "new drop out now", "made in small batches", "ships from the uk"],
+
+  // Optional background video for the homepage, e.g. "/hero.mp4" placed in
+  // /public. Keep it short and compressed (under ~5MB). null = animated scene.
+  heroVideo: null as string | null,
 };
 
 export const formatGBP = (pence: number) =>

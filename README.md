@@ -3,12 +3,19 @@
 A playful, animated online shop built with **Next.js + Tailwind + Framer Motion**, taking payments with **Stripe Checkout** in **GBP**.
 
 ## What's in it
-- Loading screen (pink, counts up to 100%, wipes away). Shows once per visit. → `src/components/Loader.tsx`
-- Page transitions (yellow panel sweep + content pop-in). → `src/app/template.tsx`
-- Quirky SVG stickers (starburst, smiley, flower, blob, squiggle), scrolling marquees, wiggly links, wobbly cards. → `src/components/Stickers.tsx`, `Marquee.tsx`
-- Shop grid, product pages with size picker, slide-out bag. The bag is saved in the browser.
-- Stripe Checkout: cards, Apple Pay, Google Pay (and Klarna if switched on). UK address, delivery options, free-delivery threshold, discount codes.
-- UK basics: £ prices, 14-day returns wording, cookie banner, company details in the footer, placeholder Terms/Privacy pages.
+- **Look:** white and airy Y2K style: glossy "aqua" pill buttons, pastel glows, frosted glass panels, big tight lowercase headings (Inter Tight).
+- **Bubble cursor:** a glossy 3D bubble with a see-through trailing bubble. It grows over links and squishes on click, and only runs on mouse/trackpad devices. → `src/components/Cursor.tsx`
+- **Loading screen:** a wobbling bubble and a glossy progress bar, then a blur-away. Shows once per visit. → `src/components/Loader.tsx`
+- **Page transitions:** pages drift in out of a soft blur. → `src/app/template.tsx`
+- **Home:** a dreamy animated sky with rising soap bubbles, with pixel-art desktop icons as navigation. Set `heroVideo` in `site.ts` to use a video instead. → `src/components/DreamScene.tsx`
+- **Navigation:** pixel icons in a left sidebar on desktop and a floating glass dock on phones. → `src/components/PixelIcon.tsx`, `Nav.tsx`
+- **Colour dots** (top right) switch the accent colour between blue, pink and yellow.
+- **Store:** coloured collection filter pills, sorting, and "PRE ORDER" / "NEW" / "SOLD OUT" stamps.
+- **Product page:** photo dots, size picker, and sparkle accordions (description, shipping + care, size chart, returns).
+- **Bag:** free-shipping progress bar, "you may also like", and Stripe checkout.
+- **Archive:** lookbook grid with file-name tags, filterable. → `src/lib/archive.ts`
+- **Payments:** Stripe Checkout (cards, Apple Pay, Google Pay, Klarna, PayPal…), UK addresses, delivery options, discount codes.
+- **UK basics:** £ prices, 14-day returns wording, cookie banner, company details in the footer, placeholder Terms/Privacy pages.
 - Respects "reduce motion" settings.
 
 ## Run it
@@ -26,8 +33,11 @@ Test card: `4242 4242 4242 4242`, any future date, any CVC.
 | Delivery prices / free-delivery threshold / countries | `src/lib/site.ts` |
 | Products, prices (in pence), sizes, photos | `src/lib/products.ts` (photos go in `public/products/`) |
 | Colours | top of `src/app/globals.css` |
+| Nav icons | `src/components/PixelIcon.tsx` (pixel maps) / `Nav.tsx` |
+| Lookbook photos | `src/lib/archive.ts` + `public/archive/` |
+| Collections (filter pills) | top of `src/lib/products.ts` |
 | Fonts | `src/app/layout.tsx` |
-| Homepage copy | `src/app/page.tsx` |
+| Homepage copy / video | `src/app/page.tsx`, `heroVideo` in `src/lib/site.ts` |
 | Shipping / returns / terms / privacy text | `src/app/info/[slug]/page.tsx` |
 
 Search the code for `TODO` to find every placeholder.
