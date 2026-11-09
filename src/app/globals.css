@@ -1,26 +1,68 @@
 @import "tailwindcss";
 
+/* ── BRAND COLOURS: change these to re-skin the whole site ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --paper: #fff8ec;
+  --ink: #161616;
+  --pink: #ff5fa2;
+  --yellow: #ffd23f;
+  --green: #3bce85;
+  --purple: #7b6cff;
+  --blue: #4fc3ff;
+  --orange: #ff7a3d;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+@layer components {
+/* chunky "sticker" card with a hard shadow */
+.card {
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  box-shadow: 5px 5px 0 var(--ink);
+  background: var(--paper);
+}
+
+.btn-pill {
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-pill:hover:not(:disabled) { transform: translate(-2px, -2px) rotate(-1deg); box-shadow: 5px 5px 0 var(--ink); }
+.btn-pill:active:not(:disabled) { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+
+.qty { width: 28px; height: 28px; border: 2px solid var(--ink); border-radius: 999px; font-weight: 800; }
+
+.wiggle { display: inline-block; transition: transform 0.2s; }
+.wiggle:hover { animation: wiggle 0.4s ease-in-out; }
+@keyframes wiggle { 25% { transform: rotate(-4deg); } 75% { transform: rotate(4deg); } }
+
+}
+
+@keyframes marquee { to { transform: translateX(-50%); } }
+.animate-marquee { animation: marquee 22s linear infinite; }
+.animate-marquee-rev { animation: marquee 22s linear infinite reverse; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin-slow { animation: spin 18s linear infinite; }
+
+@keyframes bob { 50% { transform: translateY(-14px) rotate(6deg); } }
+.bob { animation: bob 4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
 }

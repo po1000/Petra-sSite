@@ -1,103 +1,48 @@
-import Image from "next/image";
+import Link from "next/link";
+import { products } from "@/lib/products";
+import ProductCard from "@/components/ProductCard";
+import Marquee from "@/components/Marquee";
+import { Blob, Flower, Smiley, Squiggle, Starburst } from "@/components/Stickers";
+import { site } from "@/lib/site";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      {/* HERO — swap the stickers for a campaign photo/video when the client has one */}
+      <section className="relative min-h-[80vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+        <Blob className="absolute -left-20 top-10 w-80 opacity-80 spin-slow" />
+        <Starburst className="absolute right-[5%] top-[12%] w-28 md:w-40 bob" />
+        <Smiley className="absolute left-[8%] bottom-[12%] w-20 md:w-28 bob" color="var(--blue)" style={{ animationDelay: "1s" }} />
+        <Flower className="absolute right-[12%] bottom-[8%] w-24 md:w-32 spin-slow" />
+        <h1 className="font-display relative text-[15vw] md:text-[11vw] leading-[0.85]">
+          Dress<br /><span className="text-[var(--pink)] [-webkit-text-stroke:3px_var(--ink)]">weird</span><br />feel good
+        </h1>
+        <Squiggle className="w-48 mt-4 relative" color="var(--purple)" />
+        <p className="relative mt-4 max-w-md font-bold">{site.tagline}</p>
+        <Link href="/shop" className="btn-pill relative mt-6 bg-[var(--yellow)] text-lg">Shop the drop →</Link>
+      </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <Marquee text="NEW DROP ✶ NEW DROP ✶ NEW DROP ✶ NEW DROP ✶" className="bg-[var(--green)] font-display text-2xl md:text-4xl -rotate-2 scale-105" />
+      <Marquee text="SMALL BATCH ✿ UK BASED ✿ NO BORING CLOTHES ✿" reverse className="bg-[var(--purple)] text-[var(--paper)] font-display text-2xl md:text-4xl rotate-1 scale-105" />
+
+      <section className="px-4 md:px-8 mt-20">
+        <div className="flex items-end justify-between mb-8">
+          <h2 className="font-display text-4xl md:text-6xl">Fresh out</h2>
+          <Link href="/shop" className="font-bold underline wiggle">See all</Link>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {products.slice(0, 3).map((p, i) => <ProductCard key={p.slug} p={p} i={i} />)}
+        </div>
+      </section>
+
+      <section className="px-4 md:px-8 mt-24">
+        <div className="card bg-[var(--blue)] p-8 md:p-16 relative overflow-hidden">
+          <Starburst className="absolute -right-8 -bottom-8 w-48 spin-slow" color="var(--pink)" />
+          <h2 className="font-display text-3xl md:text-5xl max-w-2xl relative">Made in tiny batches by real humans in the UK</h2>
+          <p className="mt-4 max-w-xl font-bold relative">{/* TODO: client's brand story */}Placeholder for the brand story — who makes it, why it exists, what makes it different.</p>
+          <Link href="/info/about" className="btn-pill inline-block mt-6 bg-[var(--paper)] relative">Our story</Link>
+        </div>
+      </section>
+    </>
   );
 }
