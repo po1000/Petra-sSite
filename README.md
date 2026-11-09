@@ -32,10 +32,30 @@ Test card: `4242 4242 4242 4242`, any future date, any CVC.
 
 Search the code for `TODO` to find every placeholder.
 
+## Hosting: Cloudflare (free)
+The site runs on **Cloudflare Workers**. The free plan is enough for a small shop and allows commercial use. (Vercel's free plan does not allow commercial use.)
+
+**One-time setup (about 10 minutes):**
+1. Create a free account at dash.cloudflare.com.
+2. Go to **Workers & Pages → Create → Import a repository** and pick this GitHub repo.
+3. Build command: `npx opennextjs-cloudflare build`. Deploy command: `npx opennextjs-cloudflare deploy`.
+4. Under the Worker's **Settings → Variables and secrets**, add `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` (both as *Secret*) and `NEXT_PUBLIC_SITE_URL`.
+
+After that, **every push to `main` redeploys the site automatically**.
+
+To try the Cloudflare version on your own computer: put the keys in `.dev.vars` (same format as `.env.local`) and run `npm run preview`.
+
+## Domain
+Buy it from **Cloudflare Registrar** (Domain Registration → Register). It sells at cost with free privacy, and it links to the site in a couple of clicks: Worker → Settings → Domains & Routes → Add custom domain.
+Free extra: **Email Routing** forwards hello@yourdomain to any Gmail or Outlook inbox.
+
+## Payments: Stripe
+There's no monthly fee; Stripe charges per sale. In Stripe Dashboard → **Settings → Payment methods**, switch on: Cards, Apple Pay, Google Pay, Klarna, PayPal, Revolut Pay and Link. The site needs no code changes, because Checkout shows whatever is switched on.
+
 ## Going live checklist
-1. Client creates a **Stripe account** (UK business) and finishes verification. Turn on Apple Pay, Google Pay and Klarna in the dashboard.
-2. Deploy to **Vercel**: import the repo and add `STRIPE_SECRET_KEY` (live key) and `NEXT_PUBLIC_SITE_URL`.
-3. In Stripe → Developers → Webhooks, add `https://YOURDOMAIN/api/webhooks/stripe` (event `checkout.session.completed`) and put its signing secret in `STRIPE_WEBHOOK_SECRET`.
-4. Turn on customer email receipts in Stripe settings. Orders, including the delivery address, appear in the Stripe dashboard → Payments.
-5. Real legal text: terms, privacy notice (UK GDPR), returns. Register with the ICO if needed.
-6. Connect the domain in Vercel.
+1. Client creates a **Stripe account** (UK business) and finishes verification.
+2. Connect the repo to Cloudflare (above) and add the **live** Stripe key.
+3. In Stripe → Developers → Webhooks, add `https://YOURDOMAIN/api/webhooks/stripe` (event `checkout.session.completed`) and save its signing secret as `STRIPE_WEBHOOK_SECRET`.
+4. Turn on customer email receipts in Stripe settings. Orders, including the delivery address, show in Stripe → Payments.
+5. Real legal text: terms, privacy notice (UK GDPR) and returns. Register with the ICO if required.
+6. Buy and connect the domain.

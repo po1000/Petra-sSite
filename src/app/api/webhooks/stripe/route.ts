@@ -9,10 +9,16 @@ export async function POST(req: Request) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!key || !secret) return NextResponse.json({ error: "Webhook not configured" }, { status: 500 });
 
-  const stripe = new Stripe(key);
+  const stripe = new Stripe(key, { httpClient: Stripe.createFetchHttpClient() });
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(await req.text(), req.headers.get("stripe-signature") ?? "", secret);
+    event = await stripe.webhooks.constructEventAsync(
+      await req.text(),
+      req.headers.get("stripe-signature") ?? "",
+      secret,
+      undefined,
+      Stripe.createSubtleCryptoProvider()
+    );
   } catch {
     return NextResponse.json({ error: "Bad signature" }, { status: 400 });
   }
