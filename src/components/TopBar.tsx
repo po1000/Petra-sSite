@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useCart } from "@/store/cart";
 import { site } from "@/lib/site";
@@ -48,25 +49,45 @@ function CartButton() {
   );
 }
 
+function Logo({ className = "" }: { className?: string }) {
+  return (
+    <Link href="/" aria-label={`${site.name} home`} className={`block transition-transform duration-500 hover:-rotate-6 hover:scale-105 ${className}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo.webp" alt={site.name} className="h-full w-auto drop-shadow-[0_8px_14px_rgba(140,60,200,0.25)]" />
+    </Link>
+  );
+}
+
 export default function TopBar({ isHome }: { isHome: boolean }) {
   if (isHome) {
     return (
-      <div className="absolute right-4 top-4 md:right-8 md:top-6 z-30 flex items-center gap-5">
-        <AccentDots />
-        <CartButton />
-      </div>
+      <>
+        <Logo className="absolute left-1/2 -translate-x-1/2 top-4 md:top-6 z-30 h-14 md:h-20" />
+        <div className="absolute right-4 top-4 md:right-8 md:top-6 z-30 flex items-center gap-5">
+          <div className="hidden sm:block"><AccentDots /></div>
+          <CartButton />
+        </div>
+      </>
     );
   }
   const text = site.ticker.join("   ◦   ");
   return (
-    <div className="sticky top-0 z-30 flex items-center gap-4 px-4 md:px-8 pt-4 pb-3 bg-gradient-to-b from-white via-white/90 to-white/0">
+    <>
+    {/* bag + colour dots stay in the top-right corner while scrolling */}
+    <div className="fixed right-4 md:right-8 top-4 z-40 flex items-center gap-4">
+      <div className="hidden sm:block"><AccentDots /></div>
+      <CartButton />
+    </div>
+    <div className="px-4 md:px-8 pt-4 pb-3">
+      <div className="flex justify-center"><Logo className="h-14 md:h-20" /></div>
+      <div className="mt-3 flex items-center gap-4">
       <div className="flex-1 min-w-0 overflow-hidden rounded-full border-2 border-[var(--accent-light)] bg-white/70 py-2 shadow-[0_6px_20px_-12px_var(--accent-deep)] [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]" role="marquee" aria-label={site.ticker.join(", ")}>
         <div className="flex w-max animate-ticker text-sm font-semibold text-[var(--accent-deep)] opacity-80" aria-hidden>
           {[0, 1, 2, 3].map((i) => <span key={i} className="px-8 whitespace-nowrap">{text}   ◦</span>)}
         </div>
       </div>
-      <div className="hidden sm:block"><AccentDots /></div>
-      <CartButton />
+      </div>
     </div>
+    </>
   );
 }

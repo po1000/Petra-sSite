@@ -20,7 +20,7 @@ export default function Sidebar() {
       {/* mobile: floating glass dock at the bottom */}
       <nav className="md:hidden fixed bottom-3 inset-x-3 z-30 glass rounded-[28px] flex justify-around items-end px-2 py-2" aria-label="Main">
         {navItems.map((n) => (
-          <Link key={n.href} href={n.href} className="dock-item flex flex-col items-center gap-1 [&_.pix]:!w-9 [&_.pix]:!h-auto [&_.bubble]:!h-9">
+          <Link key={n.href} href={n.href} className="dock-item flex flex-col items-center gap-1 [&_.pix]:!w-9 [&_.pix]:!h-auto [&_img]:!h-9">
             <span className="h-10 grid place-items-center">{n.icon}</span>
             <span className={`text-[11px] font-semibold px-1.5 rounded-full ${active(n.href) ? "bg-[var(--accent-light)]" : ""}`}>{n.label}</span>
           </Link>

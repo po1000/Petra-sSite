@@ -5,5 +5,19 @@
   "compatibility_date": "2026-10-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+
+  // Product database and image storage (CMS). Cloudflare creates these
+  // automatically on the first deploy — no IDs needed.
+  "d1_databases": [{ "binding": "DB", "database_name": "petra-ssite-db" }],
+  "kv_namespaces": [{ "binding": "MEDIA" }],
+
+  // Keep variables added in the Cloudflare dashboard between deploys.
+  "keep_vars": true,
+  "vars": {
+    // Site password gate. This is a SHA-256 hash of the password, so the
+    // password itself isn't readable in the code. Remove this line (or set
+    // it to "") to open the site to the public.
+    "SITE_PASSWORD_HASH": "a6122c750b8f1182161956f970bb85e589ab38b7c2e570be84686be3002a3154"
+  }
 }

@@ -1,4 +1,4 @@
-import type { Garment } from "@/lib/products";
+import type { Garment } from "@/lib/catalog-types";
 
 // Soft placeholder "product shots" until the client sends real photos.
 const shapes: Record<Garment, string> = {

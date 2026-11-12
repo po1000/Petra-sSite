@@ -1,12 +1,13 @@
 "use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import type { Product } from "@/lib/products";
+import { coverImage, hasColourChoice, type Product } from "@/lib/catalog-types";
 import { formatGBP } from "@/lib/site";
-import ProductArt from "./ProductArt";
+import ProductImage, { ColourIcon } from "./ProductImage";
 
 export default function ProductCard({ p, i }: { p: Product; i: number }) {
   const label = p.soldOut ? "SOLD OUT" : p.badge;
+  const hasPhoto = !!coverImage(p);
   return (
     <motion.div
       initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
@@ -18,18 +19,19 @@ export default function ProductCard({ p, i }: { p: Product; i: number }) {
         <div className="relative aspect-[4/5]">
           {/* soft glow that appears on hover */}
           <div className="absolute inset-x-[15%] bottom-[8%] h-1/3 rounded-full blur-3xl opacity-0 group-hover:opacity-70 transition-opacity duration-500" style={{ background: "var(--accent)" }} />
-          <div className="relative h-full transition-transform duration-500 ease-out group-hover:-translate-y-2 group-hover:scale-[1.03]">
-            {p.images?.[0] ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={p.images[0]} alt={p.name} className="w-full h-full object-contain" />
-            ) : (
-              <ProductArt garment={p.garment} colour={p.colour} className="w-full h-full p-4" />
-            )}
+          {/* every photo fills the same size box here (edges are cropped if needed) */}
+          <div className={`relative h-full transition-transform duration-500 ease-out group-hover:-translate-y-2 group-hover:scale-[1.03] ${hasPhoto ? "rounded-[20px] overflow-hidden" : ""}`}>
+            <ProductImage p={p} fit="cover" artClass="p-4" />
           </div>
           {label && <span className="stamp absolute left-[6%] top-[22%]">{label}</span>}
         </div>
         <p className="h-tight text-xl md:text-2xl mt-2">{p.name}</p>
         <p className="font-semibold">{formatGBP(p.price)}</p>
+        {hasColourChoice(p) && (
+          <div className="flex justify-center gap-1.5 mt-2" aria-label={`${p.colours.length} colours`}>
+            {p.colours.slice(0, 8).map((c) => <ColourIcon key={c.id} c={c} size={16} />)}
+          </div>
+        )}
       </Link>
     </motion.div>
   );

@@ -18,11 +18,30 @@ A playful, animated online shop built with **Next.js + Tailwind + Framer Motion*
 - **UK basics:** £ prices, 14-day returns wording, cookie banner, company details in the footer, placeholder Terms/Privacy pages.
 - Respects "reduce motion" settings.
 
+## Product editor (CMS): /admin
+Go to **yoursite/admin** to add and edit products at any time. Changes go live as soon as you press **save** (or Ctrl/Cmd+S).
+- Title, price, web address, collection, "PRE ORDER"/"NEW"/"LOW STOCK" stamp, visible/hidden, sold out, sizes, description and care text.
+- **Colours:** each colour has a name, an icon (upload any image, e.g. a brown circle or a brown blob, or just pick a dot colour) and its own photos.
+- **Photos:** any shape. On the store grid they're cropped to the same size; on the product page they show in full. Photos are shrunk in the browser before upload so the site stays fast.
+- The product page carousel shows every colour's photos, grouped by colour. Picking a colour jumps to its first photo, and swiping to another colour's photos selects that colour.
+- Use the ↑ ↓ arrows on the product list to change the order on the store page.
+
+**Setup (one time):** in Cloudflare → your Worker → Settings → Variables and secrets, add a **Secret** called `ADMIN_PASSWORD` with the password you want for /admin.
+
+Products are stored in a Cloudflare **D1** database (`DB`) and photos in Cloudflare **KV** (`MEDIA`). Both are free and are created automatically on the first deploy. If the build log says it couldn't create them, add them by hand under Worker → Settings → Bindings: a D1 database bound as `DB` and a KV namespace bound as `MEDIA`.
+
+The first time the database is used, the 6 demo products are added. Edit or delete them in /admin.
+
+## Site password
+The whole shop is behind a password page (not /admin, which has its own). The password is stored as a hash in `wrangler.jsonc` (`SITE_PASSWORD_HASH`).
+- **Change it:** add a Secret called `SITE_PASSWORD` in Cloudflare with the new password. It overrides the hash.
+- **Open the site to the public:** delete the `SITE_PASSWORD_HASH` line from `wrangler.jsonc` and push, and remove any `SITE_PASSWORD` secret.
+
 ## Run it
 ```bash
 npm install
-cp .env.example .env.local   # then paste your Stripe TEST keys in
-npm run dev                  # http://localhost:3000
+cp .env.example .dev.vars    # paste your Stripe TEST key, and add ADMIN_PASSWORD=something
+npm run preview              # http://localhost:8787 (runs like Cloudflare, with a local database)
 ```
 Test card: `4242 4242 4242 4242`, any future date, any CVC.
 
@@ -31,11 +50,11 @@ Test card: `4242 4242 4242 4242`, any future date, any CVC.
 |---|---|
 | Brand name, email, socials, company number, address, VAT | `src/lib/site.ts` |
 | Delivery prices / free-delivery threshold / countries | `src/lib/site.ts` |
-| Products, prices (in pence), sizes, photos | `src/lib/products.ts` (photos go in `public/products/`) |
+| Products, prices, colours, photos | **/admin** on the live site |
 | Colours | top of `src/app/globals.css` |
 | Nav icons | `src/components/PixelIcon.tsx` (pixel maps) / `Nav.tsx` |
 | Lookbook photos | `src/lib/archive.ts` + `public/archive/` |
-| Collections (filter pills) | top of `src/lib/products.ts` |
+| Collections (filter pills) | top of `src/lib/catalog-types.ts` |
 | Fonts | `src/app/layout.tsx` |
 | Homepage copy / video | `src/app/page.tsx`, `heroVideo` in `src/lib/site.ts` |
 | Shipping / returns / terms / privacy text | `src/app/info/[slug]/page.tsx` |

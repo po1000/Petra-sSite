@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import { collections, products, type CollectionId } from "@/lib/products";
+import { collections, type CollectionId, type Product } from "@/lib/catalog-types";
 import ProductCard from "@/components/ProductCard";
 import FilterPills from "@/components/FilterPills";
 
 type Sort = "featured" | "low" | "high";
 
-export default function ShopGrid() {
+export default function ShopGrid({ products }: { products: Product[] }) {
   const [col, setCol] = useState<CollectionId | "all">("all");
   const [sort, setSort] = useState<Sort>("featured");
   let list = products.filter((p) => col === "all" || p.collection === col);

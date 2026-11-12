@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { getProduct } from "@/lib/products";
+import { getProductBySlug } from "@/lib/db";
+import { hasColourChoice } from "@/lib/catalog-types";
 import { site } from "@/lib/site";
 
 // Creates a Stripe Checkout session. Stripe hosts the payment page, so card
@@ -18,7 +19,7 @@ export async function POST(req: Request) {
   });
 
   const { items } = (await req.json()) as {
-    items: { slug: string; size: string; qty: number }[];
+    items: { slug: string; size: string; colour?: string; qty: number }[];
   };
   if (!Array.isArray(items) || !items.length)
     return NextResponse.json({ error: "Your bag is empty." }, { status: 400 });
@@ -27,9 +28,10 @@ export async function POST(req: Request) {
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
   let subtotal = 0;
   for (const i of items) {
-    const p = getProduct(i.slug);
+    const p = typeof i.slug === "string" ? await getProductBySlug(i.slug) : null;
+    const colour = p?.colours.find((c) => c.id === i.colour) ?? (p && !hasColourChoice(p) ? p.colours[0] : undefined);
     const qty = Math.floor(Number(i.qty));
-    if (!p || p.soldOut || !p.sizes.includes(i.size) || qty < 1 || qty > 10) {
+    if (!p || !colour || p.soldOut || !p.sizes.includes(i.size) || qty < 1 || qty > 10) {
       return NextResponse.json(
         { error: "Something in your bag is no longer available." },
         { status: 400 },

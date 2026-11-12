@@ -11,7 +11,11 @@ export default function Footer() {
     <footer className="mt-28 px-4 md:px-8 pb-8">
       <div className="border-t border-[var(--line)] pt-8 flex flex-col md:flex-row gap-6 md:items-end md:justify-between">
         <div>
-          <p className="h-tight text-5xl">{site.name}</p>
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-sm.png" alt="" className="h-14 w-auto" />
+            <p className="h-tight text-5xl">{site.name}</p>
+          </div>
           <p className="mt-2 text-[var(--muted)]">{site.tagline}</p>
         </div>
         <ul className="flex flex-wrap gap-x-5 gap-y-1 font-semibold text-sm">

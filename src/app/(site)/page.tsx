@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { products } from "@/lib/products";
+import { listProducts } from "@/lib/db";
 import { site } from "@/lib/site";
 import ProductCard from "@/components/ProductCard";
 import DreamScene from "@/components/DreamScene";
 import { navItems } from "@/components/Nav";
 
-export default function Home() {
+export default async function Home() {
+  const products = await listProducts();
   return (
     <>
       <section className="relative h-[100svh] min-h-[560px] flex flex-col items-center justify-center text-center px-4">
