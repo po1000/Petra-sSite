@@ -8,10 +8,18 @@ export async function sha256(text: string) {
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-/** Hash of the site password, or "" when the site is open to everyone. */
+/**
+ * Hash of the site password, or "" when the site is open to everyone.
+ * Set in Cloudflare → Worker → Settings → Variables and secrets:
+ *   SITE_PASSWORD       the password itself (recommended, as a Secret), or
+ *   SITE_PASSWORD_HASH  older setting: a SHA-256 hash, or a plain password.
+ */
 export async function sitePasswordHash() {
-  if (process.env.SITE_PASSWORD) return sha256(process.env.SITE_PASSWORD);
-  return (process.env.SITE_PASSWORD_HASH ?? "").trim().toLowerCase();
+  const plain = process.env.SITE_PASSWORD?.trim();
+  if (plain) return sha256(plain);
+  const old = (process.env.SITE_PASSWORD_HASH ?? "").trim();
+  if (!old) return "";
+  return /^[0-9a-f]{64}$/i.test(old) ? old.toLowerCase() : sha256(old);
 }
 
 export const siteCookieValue = (hash: string) => sha256(`${hash}:site-ok`);

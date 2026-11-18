@@ -33,9 +33,10 @@ Products are stored in a Cloudflare **D1** database (`DB`) and photos in Cloudfl
 The first time the database is used, the 6 demo products are added. Edit or delete them in /admin.
 
 ## Site password
-The whole shop is behind a password page (not /admin, which has its own). The password is stored as a hash in `wrangler.jsonc` (`SITE_PASSWORD_HASH`).
-- **Change it:** add a Secret called `SITE_PASSWORD` in Cloudflare with the new password. It overrides the hash.
-- **Open the site to the public:** delete the `SITE_PASSWORD_HASH` line from `wrangler.jsonc` and push, and remove any `SITE_PASSWORD` secret.
+The whole shop is behind a password page (/admin isn't; it has its own password). The password is set in Cloudflare, not in the code:
+**Worker → Settings → Variables and secrets → Add → type Secret, name `SITE_PASSWORD`, value = the password.**
+- **Change it:** edit that secret. Changes apply within a minute, with no redeploy needed.
+- **Open the site to the public:** delete the `SITE_PASSWORD` secret (and any old `SITE_PASSWORD_HASH` variable).
 
 ## Run it
 ```bash

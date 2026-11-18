@@ -12,12 +12,7 @@
   "d1_databases": [{ "binding": "DB", "database_name": "petra-ssite-db" }],
   "kv_namespaces": [{ "binding": "MEDIA" }],
 
-  // Keep variables added in the Cloudflare dashboard between deploys.
-  "keep_vars": true,
-  "vars": {
-    // Site password gate. This is a SHA-256 hash of the password, so the
-    // password itself isn't readable in the code. Remove this line (or set
-    // it to "") to open the site to the public.
-    "SITE_PASSWORD_HASH": "a6122c750b8f1182161956f970bb85e589ab38b7c2e570be84686be3002a3154"
-  }
+  // Keep variables and secrets added in the Cloudflare dashboard between
+  // deploys. The site password lives there (SITE_PASSWORD), not in this file.
+  "keep_vars": true
 }
